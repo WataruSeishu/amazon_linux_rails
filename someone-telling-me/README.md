@@ -54,8 +54,6 @@ $ sudo su -
 ## RBENV_ROOT環境変数の有効化やrbenv init実行
 
 ```
-# su - root
-
 # env | grep RBENV
 RBENV_ROOT=/usr/local/rbenv
 RBENV_SHELL=bash
@@ -186,16 +184,16 @@ uid=501(webapp) gid=501(webapp) groups=501(webapp)
 
 ```
 // webappユーザになる
-$ sudo su - webapp
+# sudo su - webapp
 
 // アプリケーションの作成
-$ rails new railsapp --skip-bundle
-$ cd railsapp/
+# rails new railsapp --skip-bundle
+# cd railsapp/
 
 // このままだとjsの実行環境が無いと怒られたのでGemfileに `gem 'therubyracer'` を追記
 // gemファイルの「gem 'therubyracer', platforms: :ruby」のコメントアウト解除
 
-$ vi Gemgfile
+# vi Gemgfile
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -204,9 +202,9 @@ $ vi Gemgfile
 gem 'therubyracer', platforms: :ruby
 
 
-$ bundle config build.nokogiri --use-system-libraries
-$ bundle install --path=vendor/bundle
-$ bundle exec rails s -b 0.0.0.0
+# bundle config build.nokogiri --use-system-libraries
+# bundle install --path=vendor/bundle
+# bundle exec rails s -b 0.0.0.0
 ```
 
 ブラウザで http:// Public IPアドレス:3000 にアクセスしてrailsの初期画面が表示されたらOK。
@@ -218,13 +216,13 @@ $ bundle exec rails s -b 0.0.0.0
 nginxからunix socketを使って接続するためにpumaの設定ファイルに設定を記載
 
 ```
-echo 'bind "unix://#{app_root}/tmp/sockets/puma.sock"' >> config/puma.rb
+# echo 'bind "unix://#{app_root}/tmp/sockets/puma.sock"' >> config/puma.rb
 ```
 
 pumaをデーモンとして実行。
 
 ```
-$ bundle exec puma -d -C config/puma.rb
+# bundle exec puma -d -C config/puma.rb
 ```
 
 ## nginxの設定と再起動
@@ -234,7 +232,7 @@ rootユーザーで実行
 nginxの実行ユーザをrailsアプリケーションの実行ユーザと同じwebappに変更。
 
 ```
-$ vi /etc/nginx/nginx.conf
+# vi /etc/nginx/nginx.conf
 user nginx;
 ↓
 user webapp;
