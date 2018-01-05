@@ -44,7 +44,7 @@ $ sudo su -
 # source /etc/profile
 ```
 
-##ruby-buildインストール
+## ruby-buildインストール
 
 ```
 # git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
