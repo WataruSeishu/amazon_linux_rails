@@ -194,7 +194,7 @@ uid=501(webapp) gid=501(webapp) groups=501(webapp)
 // このままだとjsの実行環境が無いと怒られたのでGemfileに `gem 'therubyracer'` を追記
 // gemファイルの「gem 'therubyracer', platforms: :ruby」のコメントアウト解除
 
-# vi Gemgfile
+# vi Gemfile
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
