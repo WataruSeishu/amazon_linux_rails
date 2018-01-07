@@ -38,7 +38,7 @@ $ sudo su -
 # diff /etc/profile /etc/profile.ORG
 #
 
-# echo 'export RBENV_ROOT="/usr/local/rbenv"'' >> /etc/profile
+# echo 'export RBENV_ROOT="/usr/local/rbenv"' >> /etc/profile
 # echo 'export PATH="${RBENV_ROOT}/bin:${PATH}"' >> /etc/profile
 # echo 'eval "$(rbenv init -)"' >> /etc/profile
 
@@ -90,6 +90,10 @@ rbenv 0.4.0-146-g7ad01b2
 # rbenv install -v X.X.X(ここの数字は適宜指定)
 # rbenv rehash
 # rbenv global X.X.X(指定したバージョンを再度指定)
+
+version確認
+# rbenv global
+# rbenv versions
  ```
 
 
@@ -130,7 +134,7 @@ Rails環境構築完了
 ※rootユーザーのまま行う
 
 ```
-vi /etc/yum.repos.d/MariaDB.repo
+# vi /etc/yum.repos.d/MariaDB.repo
 
 # MariaDB 10.1 CentOS repository list - created 2016-03-13 07:22 UTC
 # http://mariadb.org/mariadb/repositories/
@@ -188,6 +192,7 @@ uid=501(webapp) gid=501(webapp) groups=501(webapp)
 # sudo su - webapp
 
 // アプリケーションの作成
+// 共有フォルダなどで下記コマンドを実行する場合はPermissionに注意することディレクトリのオーナーなどによって実行できない場合がある  
 # rails new railsapp --skip-bundle
 # cd railsapp/
 
@@ -216,7 +221,9 @@ gem 'therubyracer', platforms: :ruby
 
 nginxからunix socketを使って接続するためにpumaの設定ファイルに設定を記載
 
+#{app_root}を書き換えて実行すること
 ```
+# echo 'app_root = File.expand_path("../..", __FILE__)' >> config/puma.rb
 # echo 'bind "unix://#{app_root}/tmp/sockets/puma.sock"' >> config/puma.rb
 ```
 
@@ -242,18 +249,18 @@ user webapp;
 /etc/nginx/conf.d/webapp.confに設定を記載。
 
 ```
-# /etc/nginx/conf.d/webapp.conf
+# vi /etc/nginx/conf.d/webapp.conf
 
 upstream railsapp {
     # Path to Puma SOCK file, as defined previously
-    server unix:///path/to/railsapp/tmp/sockets/puma.sock fail_timeout=0;
+    server unix:///home/webapp/railsapp/tmp/sockets/puma.sock fail_timeout=0;
 }
 
 server {
     listen 80;
-    server_name サーバ名;
+    server_name 192.168.33.10;
 
-    root /path/to/railsapp/public;
+    root /home/webapp/railsapp/public;
 
     try_files $uri/index.html $uri @railsapp;
 
@@ -274,9 +281,11 @@ server {
 
 ```
 # chown -R webapp /var/lib/nginx
+# chown -R webapp /var/log/nginx
 ```
 
 nginxを再起動。
+※rootユーザーで実行
 
 ```
 # service nginx restart
