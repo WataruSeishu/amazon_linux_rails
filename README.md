@@ -9,6 +9,7 @@
 ```
 vagrant init mvbcoding/awslinux
 vagrant up --provider virtualbox
+vagrant ssh
 ```
 
 ## Amazon Linuxへパッケージインストール
@@ -48,7 +49,7 @@ $ sudo su -
 
 ```
 # git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
-# sh /usr/local/rbenv/plugins/ruby-buildu/install.sh
+# sh /usr/local/rbenv/plugins/ruby-build/install.sh
 ```
 
 ## RBENV_ROOT環境変数の有効化やrbenv init実行
