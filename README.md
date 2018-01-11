@@ -174,7 +174,7 @@ gpgcheck=1
 ```
 
 ## webappユーザの作成
-
+※同期フォルダを使う場合はこの手順は飛ばしwebappユーザーとなっている部分をvagrantユーザーに読み替えること
 ```
 # cp -p /etc/passwd /etc/passwd.ORG
 # cp -p /etc/shadow /etc/shadow.ORG
@@ -192,7 +192,6 @@ uid=501(webapp) gid=501(webapp) groups=501(webapp)
 # sudo su - webapp
 
 // アプリケーションの作成
-// 共有フォルダなどで下記コマンドを実行する場合はPermissionに注意することディレクトリのオーナーなどによって実行できない場合がある  
 # rails new railsapp --skip-bundle
 # cd railsapp/
 
@@ -221,11 +220,16 @@ gem 'therubyracer', platforms: :ruby
 
 nginxからunix socketを使って接続するためにpumaの設定ファイルに設定を記載
 
-#{app_root}を書き換えて実行すること
+vagrantなどの共有フォルダにプログラムを配置しない場合は
 ```
 # echo 'app_root = File.expand_path("../..", __FILE__)' >> config/puma.rb
 # echo 'bind "unix://#{app_root}/tmp/sockets/puma.sock"' >> config/puma.rb
 ```
+
+vagrantなどの共有フォルダにプログラムを配置する場合は
+```
+# echo 'bind "unix:///var/tmp/sockets/puma.sock"' >> config/puma.rb
+``` 
 
 pumaをデーモンとして実行。
 
@@ -253,6 +257,7 @@ user webapp;
 
 upstream railsapp {
     # Path to Puma SOCK file, as defined previously
+    # この部分は前述のsocketファイルの吐き出し位置を記載すること
     server unix:///home/webapp/railsapp/tmp/sockets/puma.sock fail_timeout=0;
 }
 
@@ -294,3 +299,5 @@ Starting nginx:                                            [  OK  ]
 ```
 
 ブラウザで http:// Public IPアドレス にアクセスしてrailsの初期画面が表示されたら完了。
+
+# 蛇足：DBの文字コード変更について
