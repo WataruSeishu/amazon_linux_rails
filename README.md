@@ -14,9 +14,9 @@ vagrant ssh
 
 ## Amazon Linuxへパッケージインストール
 
-* Amazon LinuxのEC2インスタンスが作成されたら、ec2-userでログインする。
 * gitインストール。
 
+※共有フォルダを使う場合はrootユーザーではなくvagrantユーザーで行う
 ```
 $ sudo su -
 # yum -y install git
@@ -132,6 +132,7 @@ Rails環境構築完了
 ## MariaDB
 
 ※rootユーザーのまま行う
+※共有フォルダを使う場合もrootユーザーで行う
 
 ```
 # vi /etc/yum.repos.d/MariaDB.repo
@@ -156,6 +157,7 @@ gpgcheck=1
 # nginx周辺
 
 ※rootユーザーのまま行う
+※共有フォルダを使う場合もrootユーザーで行う
 
 ## インストール
 
